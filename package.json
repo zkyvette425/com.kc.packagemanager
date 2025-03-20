@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:zkyvette425/com.kc.packagemanager.git"
+    "url": "git+ssh://git@github.com:zkyvette425/com.kc.packagemanager.git"
   },
   "relatedPackages": {},
   "license": "MIT",
