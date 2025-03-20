@@ -1,21 +1,16 @@
-﻿{
+{
   "name": "com.kc.packagemanager",
   "displayName": "KC.PackageManager",
   "version": "0.1.0",
   "unity": "2022.3",
-  "description": "",
-  "author": {
-    "name": "KunZhou",
-    "url": "https://github.com/zkyvette425"
-  },
+  "author": "KunZhou",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com:zkyvette425/com.kc.packagemanager.git"
   },
-  "relatedPackages": {},
+  "keywords": [
+    "kc"
+  ],
   "license": "MIT",
-  "dependencies": {},
-  "publishConfig": {
-    "registry": "https://package.openupm.com"
-  }
+  "description": "KC\u5305\u4f53\u7ba1\u7406\u5668"
 }
