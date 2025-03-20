@@ -7,7 +7,7 @@ namespace KC
 {
     public static partial class Menu
     {
-        [MenuItem("KC/PackageManager/转移所有kc包至Packages",false,2)]
+        [MenuItem("KC/PackageManager/转移所有kc包至Packages",false,3)]
         public static void FromLibraryToPackage()
         {
 
