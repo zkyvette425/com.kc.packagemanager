@@ -22,7 +22,7 @@ namespace KC
                 {
                     continue;
                 }
-                PackageManagerHelper.FromLibraryToPackageWithExitedEvent(added.name, added.version);
+                PackageManagerHelper.FromLibraryToPackageWithWaitForExit(added.name, added.version);
             }
 
             foreach (var removed in obj.removed)
@@ -31,7 +31,6 @@ namespace KC
                 {
                     continue;
                 }
-                Debug.Log($"removed package:{removed.name}@{removed.version}");
             }
 
             foreach (var changedFrom in obj.changedFrom)
@@ -40,7 +39,7 @@ namespace KC
                 {
                     continue;
                 }
-                PackageManagerHelper.FromLibraryToPackageWithExitedEvent(changedFrom.name, changedFrom.version);
+                PackageManagerHelper.FromLibraryToPackageWithWaitForExit(changedFrom.name, changedFrom.version);
             }
             
             foreach (var changedTo in obj.changedTo)
@@ -49,7 +48,7 @@ namespace KC
                 {
                     continue;
                 }
-                PackageManagerHelper.FromLibraryToPackageWithExitedEvent(changedTo.name, changedTo.version);
+                PackageManagerHelper.FromLibraryToPackageWithWaitForExit(changedTo.name, changedTo.version);
             }
             
             AssetDatabase.Refresh();

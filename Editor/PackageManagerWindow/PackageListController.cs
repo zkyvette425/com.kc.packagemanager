@@ -30,7 +30,7 @@ namespace KC
             _isUninstalledPackagesLoading = true;
             _rotationAngleInstalled = 0f;
             _rotationAngleUninstalled = 0f;
-            _request = Client.List();
+            _request = Client.List(false,true);
             EditorApplication.update += WaitInstalledPackages;
         }
 
@@ -163,7 +163,13 @@ namespace KC
                 }
                 using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                 {
-                    if (GUILayout.Button(package.Info.name))
+                    var name = package.Info.name;
+                    if (package.Info.versions.compatible.Length > 0 && PackageManagerHelper.CompareVersion(package.Info.version,
+                            package.Info.versions.compatible[^1]) < 0)
+                    {
+                        name = $"{name}  ↑";
+                    }
+                    if (GUILayout.Button(name))
                     {
                         OnPackageSelected?.Invoke(package);
                     }

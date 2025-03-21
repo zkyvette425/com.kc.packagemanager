@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -36,34 +37,6 @@ namespace KC
             string output = process.StandardOutput.ReadToEnd();
             Debug.Log(output);
         }
-        
-        public static void FromLibraryToPackageWithExitedEvent(string packageName, string version)
-        {
-            if (!File.Exists(BatPath))
-            {
-                Debug.LogError($"找不到目录: {BatPath} 的bat文件");
-                return;
-            }
-            if (!Directory.Exists(PackageCachePath))
-            {
-                Debug.LogError($"找不到包缓存目录: {PackageCachePath}");
-                return;
-            }
-
-            // 确保目标目录存在
-            Directory.CreateDirectory(PackagesPath);
-
-            Debug.Log($"move package: {packageName}");
-            Process process = ProcessHelper.PowerShell($"-NoExit -ExecutionPolicy Bypass -File ./Packages/com.kc.packagemanager/MoveToPackages.ps1 {packageName} {version}", waitExit: true);
-            process.EnableRaisingEvents = true; // 启用事件触发
-            process.Exited += (sender, args) =>
-            {
-                string output = process.StandardOutput.ReadToEnd();
-                Debug.Log(output);
-                AssetDatabase.Refresh();
-            };
-            process.Start();
-        }
 
         public static void DeletePackage(string packageName)
         {
@@ -73,6 +46,11 @@ namespace KC
                 return;
             }
             Directory.Delete(path, true);
+        }
+
+        public static int CompareVersion(string versionA, string versionB)
+        {
+            return new Version(versionA).CompareTo(new Version(versionB));
         }
     }
 }    

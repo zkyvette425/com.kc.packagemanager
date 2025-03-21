@@ -11,6 +11,7 @@ namespace KC
         private string _authorName = "";
         private string _initialVersion = "0.1.0";
         private string _packageName = "";
+        private string _displayName;
         private static readonly Regex ValidPackageNameRegex = new Regex(@"^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*)*$");
 
         [MenuItem("KC/PackageManager/创建包",false,2)]
@@ -25,7 +26,12 @@ namespace KC
             _authorName = EditorGUILayout.TextField("作者", _authorName);
             _initialVersion = EditorGUILayout.TextField("初始版本号", _initialVersion);
             _packageName = EditorGUILayout.TextField("包名称", _packageName);
-
+            
+            
+            GUI.enabled = false;
+            _displayName = EditorGUILayout.TextField("显示名称", FormatDisplayName(_packageName));
+            GUI.enabled = true;
+            
             if (string.IsNullOrEmpty(_packageName))
             {
                 return;
@@ -93,10 +99,10 @@ namespace KC
             string packageJson = GeneratePackageJson(authorName, version, fullPackageName);
             File.WriteAllText(Path.Combine(packagePath, "package.json"), packageJson);
 
-            string editorAsmdef = GenerateAsmdef($"KC.{packageName.ToUpper()}.Editor", false);
-            string runtimeAsmdef = GenerateAsmdef($"KC.{packageName.ToUpper()}.Runtime", true);
-            File.WriteAllText(Path.Combine(editorPath, $"KC.{packageName.ToUpper()}.Editor.asmdef"), editorAsmdef);
-            File.WriteAllText(Path.Combine(runtimePath, $"KC.{packageName.ToUpper()}.Runtime.asmdef"), runtimeAsmdef);
+            string editorAsmdef = GenerateAsmdef($"KC.{_displayName}.Editor", false);
+            string runtimeAsmdef = GenerateAsmdef($"KC.{_displayName}.Runtime", true);
+            File.WriteAllText(Path.Combine(editorPath, $"KC.{_displayName}.Editor.asmdef"), editorAsmdef);
+            File.WriteAllText(Path.Combine(runtimePath, $"KC.{_displayName}.Runtime.asmdef"), runtimeAsmdef);
 
             AssetDatabase.Refresh();
         }
@@ -106,7 +112,7 @@ namespace KC
             StringBuilder json = new StringBuilder();
             json.AppendLine("{");
             json.AppendLine($"  \"name\": \"{fullPackageName}\",");
-            json.AppendLine($"  \"displayName\": \"KC.{_packageName.ToUpper()}\",");
+            json.AppendLine($"  \"displayName\": \"KC.{_displayName}\",");
             json.AppendLine($"  \"version\": \"{version}\",");
             json.AppendLine($"  \"unity\": \"2022.3\",");
             json.AppendLine($"  \"description\": \"\",");
@@ -146,6 +152,25 @@ namespace KC
             asmdef.AppendLine($"  \"noEngineReferences\": false");
             asmdef.AppendLine("}");
             return asmdef.ToString();
+        }
+        
+        private string FormatDisplayName(string packageName)
+        {
+            string[] parts = packageName.Split('.');
+            StringBuilder displayName = new StringBuilder();
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (i > 0)
+                {
+                    displayName.Append(" ");
+                }
+                if (parts[i].Length > 0)
+                {
+                    displayName.Append(char.ToUpper(parts[i][0]));
+                    displayName.Append(parts[i].Substring(1));
+                }
+            }
+            return displayName.ToString();
         }
     }
 }    
